@@ -31,16 +31,16 @@ while running:
         # Get the mouse position
         mouse_x, mouse_y = pygame.mouse.get_pos()
         # Check if the mouse is near the left edge
-        if mouse_x < 10 and mouse_y < 10:
+        if mouse_x < 10 and mouse_y < SCREEN_HEIGHT: #pos = 0, 50
             x -= SPEED
         # Check if the mouse is near the right edge
-        elif mouse_x > SCREEN_WIDTH - 10 and 10 < mouse_y < SCREEN_HEIGHT:
+        if mouse_x > (SCREEN_WIDTH - 10) and mouse_y < SCREEN_HEIGHT: #pos = 200, 50
             x += SPEED
         # Check if the mouse is near the top edge
-        if  mouse_x < SCREEN_WIDTH and mouse_y < 10:
+        if mouse_x < SCREEN_WIDTH and mouse_y < 10: #pos = 50, 0
             y -= SPEED
         # Check if the mouse is near the bottom edge
-        elif mouse_x > (SCREEN_WIDTH - 10) and (SCREEN_HEIGHT - 10) < mouse_y < SCREEN_HEIGHT:
+        if mouse_x < SCREEN_WIDTH and (SCREEN_HEIGHT - 10) < mouse_y: #pos = 50, 200
             y += SPEED
         hwnd = win32gui.FindWindow(None, "Mouse Follow")
         win32gui.SetWindowPos(hwnd, 0, x, y, 0, 0, win32con.SWP_NOSIZE | win32con.SWP_NOZORDER)
