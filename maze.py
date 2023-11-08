@@ -1,6 +1,6 @@
 import pygame
 import sys
-
+from pygame.locals import *
 import win32con
 import win32gui
 
@@ -8,8 +8,8 @@ import win32gui
 pygame.init()
 
 # Constants
-SCREEN_WIDTH = 200
-SCREEN_HEIGHT = 200
+SCREEN_WIDTH = 300
+SCREEN_HEIGHT = 300
 SCREEN_COLOR = (0, 0, 0)  # Black
 SQUARE_SIZE = 20
 SPEED = 5  # Adjust this value to control the movement speed
@@ -20,7 +20,14 @@ screen = pygame.display.set_mode((SCREEN_WIDTH, SCREEN_HEIGHT))
 pygame.display.set_caption("Mouse Follow")
 
 # Initialize starting position
-x, y = 50, 50
+x, y = 250, 250
+hwnd = win32gui.FindWindow(None, "Mouse Follow")
+win32gui.SetWindowPos(hwnd, 0, x, y, 0, 0, win32con.SWP_NOSIZE | win32con.SWP_NOZORDER)
+# Set up maze and screen
+screen.fill(SCREEN_COLOR)
+mask_rect = pygame.Rect(x, y, SCREEN_WIDTH+x, SCREEN_HEIGHT+y)
+large_screen = pygame.image.load('maze.png')
+screen.blit(large_screen, (-x, -y), mask_rect)
 # Main game loop
 running = True
 while running:
@@ -44,11 +51,11 @@ while running:
             y += SPEED
         hwnd = win32gui.FindWindow(None, "Mouse Follow")
         win32gui.SetWindowPos(hwnd, 0, x, y, 0, 0, win32con.SWP_NOSIZE | win32con.SWP_NOZORDER)
+        
         # Update the display
         screen.fill(SCREEN_COLOR)
-    
-        # Draw a small square at the mouse position
-        pygame.draw.rect(screen, (255, 255, 255), (mouse_x - SQUARE_SIZE // 2, mouse_y - SQUARE_SIZE // 2, SQUARE_SIZE, SQUARE_SIZE))
+        mask_rect = pygame.Rect(x, y, SCREEN_WIDTH+x, SCREEN_HEIGHT+y)
+        screen.blit(large_screen, (-x, -y), mask_rect)
 
     # Update the display
     pygame.display.flip()
